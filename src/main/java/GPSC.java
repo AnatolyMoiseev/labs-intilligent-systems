@@ -18,7 +18,7 @@ public class GPSC
 
     public void readFile() throws IOException {
         int j = -1;
-        BufferedReader reader = new BufferedReader(new FileReader("D:\\zina2790.17n.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("zina2790.17n"));
         String line;
         while ((line = reader.readLine()) != null)
         {

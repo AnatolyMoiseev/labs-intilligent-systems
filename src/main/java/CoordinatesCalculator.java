@@ -1,17 +1,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class CoordinatesCalculator {
 
-    public String inputTime() {
-        return null;
-    }
-
-    public void calculate() throws IOException {
+    public static void calculate(String time) throws IOException {
         int[] InputTime = new int[6];
-        String tempTime = inputTime();
-        String[] substrings = tempTime.split(".");
+        String[] substrings = time.split(".");
         int i = 0;
         for (String substring : substrings) {
             InputTime[i] = Integer.parseInt(substring);
