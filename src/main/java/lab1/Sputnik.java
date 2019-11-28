@@ -1,3 +1,5 @@
+package lab1;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

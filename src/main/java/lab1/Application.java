@@ -1,4 +1,4 @@
-import org.apache.commons.net.ftp.FTPClient;
+package lab1;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -7,11 +7,9 @@ public class Application {
 
     private static String inputTime() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите дату: ");
+        System.out.print("Введите дату и время: ");
 
-        String suka = scanner.nextLine();
-
-        return suka;
+        return scanner.nextLine();
     }
 
     public static void main(String[] args) {

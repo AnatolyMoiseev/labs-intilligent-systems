@@ -1,23 +1,25 @@
+package lab1;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class CoordinatesCalculator {
 
     public static void calculate(String time) throws IOException {
-        int[] InputTime = new int[6];
+        int[] inputTime = new int[6];
         String[] substrings = time.split(".");
         int i = 0;
+
         for (String substring : substrings) {
-            InputTime[i] = Integer.parseInt(substring);
+            inputTime[i] = Integer.parseInt(substring);
             i++;
         }
 
-        System.out.println("Текущая дата: " + InputTime[0] + "." + InputTime[1] + "." + InputTime[2]);
-        System.out.println("Текущее время: " + InputTime[3] + ":" + InputTime[4] + ":" + InputTime[5]);
+        System.out.println("Текущая дата: " + inputTime[0] + "." + inputTime[1] + "." + inputTime[2]);
+        System.out.println("Текущее время: " + inputTime[3] + ":" + inputTime[4] + ":" + inputTime[5]);
 
-        GPSC gps = new GPSC(InputTime);
+        GPSC gps = new GPSC(inputTime);
         gps.readFile();
         int numberSp = 0;
         int minday = 100;
@@ -25,12 +27,12 @@ public class CoordinatesCalculator {
         int minminut = 100;
         double minsec = 100;
         for (i = 0; i < 210; i++) {
-            if ((gps.getCoordinates()[i].getNumber() != 0) && (Math.abs(InputTime[0] - gps.getCoordinates()[i].getDay()) <= minday) && (Math.abs(InputTime[3] - gps.getCoordinates()[i].getHours()) <= minhour) && (Math.abs(InputTime[4] - gps.getCoordinates()[i].getMinuts()) <= minminut) && (Math.abs(InputTime[5] - gps.getCoordinates()[i].getSeconds()) < minsec)) {
+            if ((gps.getCoordinates()[i].getNumber() != 0) && (Math.abs(inputTime[0] - gps.getCoordinates()[i].getDay()) <= minday) && (Math.abs(inputTime[3] - gps.getCoordinates()[i].getHours()) <= minhour) && (Math.abs(inputTime[4] - gps.getCoordinates()[i].getMinuts()) <= minminut) && (Math.abs(inputTime[5] - gps.getCoordinates()[i].getSeconds()) < minsec)) {
                 numberSp = gps.getCoordinates()[i].getNumber();
-                minday = Math.abs(InputTime[0] - gps.getCoordinates()[i].getDay());
-                minhour = Math.abs(InputTime[3] - gps.getCoordinates()[i].getHours());
-                minminut = Math.abs(InputTime[4] - gps.getCoordinates()[i].getMinuts());
-                minsec = Math.abs(InputTime[5] - gps.getCoordinates()[i].getSeconds());
+                minday = Math.abs(inputTime[0] - gps.getCoordinates()[i].getDay());
+                minhour = Math.abs(inputTime[3] - gps.getCoordinates()[i].getHours());
+                minminut = Math.abs(inputTime[4] - gps.getCoordinates()[i].getMinuts());
+                minsec = Math.abs(inputTime[5] - gps.getCoordinates()[i].getSeconds());
             }
         }
 
@@ -41,7 +43,7 @@ public class CoordinatesCalculator {
 
         //Преобразовать время TPC во время t от начала GPS-недели
         int nday = (int) (gps.getCoordinates()[i].getTOE() / 86400);
-        double t = nday * 86400 + InputTime[3] * 3600 + InputTime[4] * 60 + InputTime[5];
+        double t = nday * 86400 + inputTime[3] * 3600 + inputTime[4] * 60 + inputTime[5];
         //Вычислить момент tk от эпохи времени GPS, соответствующий расчетному времени t
         double tk = t - gps.getCoordinates()[i].getTOE();
         if (tk > 302400)
@@ -60,8 +62,7 @@ public class CoordinatesCalculator {
         do {
             EkOld = EkNew;
             EkNew = EkOld + (Mk - EkOld + gps.getCoordinates()[i].getE0() * Math.sin(EkOld)) / (1 - gps.getCoordinates()[i].getE0() * Math.cos(EkOld));
-        }
-        while (Math.abs(EkNew - EkOld) > eps);
+        } while (Math.abs(EkNew - EkOld) > eps);
         //Вычислить производную Ek
         double Ek1 = n / (1 - gps.getCoordinates()[i].getE0() * Math.cos(EkNew));
         //Вычислить истинную аномалию
